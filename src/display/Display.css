@@ -1,0 +1,19 @@
+
+
+/* temp */
+.StackDisplay {
+    font-family: monospace;
+    font-size: large;
+}
+
+.StackDisplay-gutter {
+    float: left;
+}
+
+.StackDisplay-gutter-cell {
+    width: 60px;
+}
+
+.StackDisplay-content-line {
+    white-space: pre;
+}
