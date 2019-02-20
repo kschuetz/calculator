@@ -1,18 +1,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
 import './index.css';
 import {buildDisplaySandbox} from "./display/DisplaySandbox";
 import registerServiceWorker from './registerServiceWorker';
 
-import {Attributes, TextFragment} from './display/models';
+import {Attributes, TextFragment} from './display/spike/models';
 import {createEntry} from "./display/stack/models";
 
 const DisplaySandbox = buildDisplaySandbox();
 
 ReactDOM.render(
     <React.Fragment>
-        <App/>
         <DisplaySandbox/>
     </React.Fragment>,
 

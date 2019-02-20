@@ -1,9 +1,14 @@
 
-
-/* temp */
-.StackDisplay {
+.DisplayRoot {
     font-family: monospace;
-    font-size: large;
+    font-size: 20pt;
+    margin: auto;
+    width: 50%;
+}
+
+.MainInput-inner {
+    font-family: monospace;
+    font-size: 20pt;
 }
 
 .StackDisplay-gutter {

@@ -1,36 +1,40 @@
 import {ReactNode} from "react";
 import * as React from "react";
-import {Entry, Stack} from "./stack/models";
-import './Display.css';
+import {Entry, StackDisplayModel} from "./models";
+import '../Display.css';
 
-export interface IStackDisplayAttributes {
+export interface StackDisplayAttributes {
     lineHeight: number;
     topDown: boolean;
 }
 
-export interface IStackDisplayProps {
-    stack: Stack;
-    displayAttributes: IStackDisplayAttributes;
+export interface StackDisplayProps {
+    stack: StackDisplayModel;
+    displayAttributes: StackDisplayAttributes;
 }
 
-interface IStackGutterCellProps {
+interface StackGutterCellProps {
     lineNumber: number;
     entry: Entry,
-    displayAttributes: IStackDisplayAttributes;
+    displayAttributes: StackDisplayAttributes;
 }
 
-class StackGutterCell extends React.Component<IStackGutterCellProps, any> {
+function heightUnits(height: number) {
+    return `${height}em`;
+}
+
+class StackGutterCell extends React.Component<StackGutterCellProps, any> {
     public render() {
         const height = this.props.displayAttributes.lineHeight * this.props.entry.lineCount;
         return (
-            <div className="StackDisplay-gutter-cell" style={{height: `${height}px`}}>
+            <div className="StackDisplay-gutter-cell" style={{height: heightUnits(height)}}>
                 <span className="StackDisplay-gutter-line-number">{this.props.lineNumber}</span>
                 <span className="StackDisplay-gutter-separator">:</span>
             </div>);
     }
 }
 
-class StackDisplayGutter extends React.Component<IStackDisplayProps, any> {
+class StackDisplayGutter extends React.Component<StackDisplayProps, any> {
     public render() {
         const displayAttributes = this.props.displayAttributes;
         let lineNumber = 1;
@@ -49,28 +53,28 @@ class StackDisplayGutter extends React.Component<IStackDisplayProps, any> {
     }
 }
 
-interface IStackDisplayContentLine {
+interface StackDisplayContentLineProps {
     text: string;
-    displayAttributes: IStackDisplayAttributes;
+    displayAttributes: StackDisplayAttributes;
 }
 
-class StackDisplayContentLine extends React.Component<IStackDisplayContentLine, any> {
+class StackDisplayContentLine extends React.Component<StackDisplayContentLineProps, any> {
     public render() {
         let height = this.props.displayAttributes.lineHeight;
         return (
-            <div className="StackDisplay-content-line" style={{height: `${height}px`}}>
+            <div className="StackDisplay-content-line" style={{height: heightUnits(height)}}>
                 {this.props.text}
             </div>
         )
     }
 }
 
-interface IStackDisplayEntry {
+interface StackDisplayEntryProps {
     entry: Entry;
-    displayAttributes: IStackDisplayAttributes;
+    displayAttributes: StackDisplayAttributes;
 }
 
-class StackDisplayEntry extends React.Component<IStackDisplayEntry, any> {
+class StackDisplayEntry extends React.Component<StackDisplayEntryProps, any> {
     public render() {
         const entry = this.props.entry;
         let displayAttributes = this.props.displayAttributes;
@@ -83,7 +87,7 @@ class StackDisplayEntry extends React.Component<IStackDisplayEntry, any> {
                                                    displayAttributes={displayAttributes}/>);
         }
         return (
-            <div className="StackDisplay-entry" style={{height: `${height}px`}}>
+            <div className="StackDisplay-entry" style={{height: heightUnits(height)}}>
                 {children}
             </div>
         );
@@ -91,7 +95,7 @@ class StackDisplayEntry extends React.Component<IStackDisplayEntry, any> {
 }
 
 
-class StackDisplayScroller extends React.Component<IStackDisplayProps, any> {
+class StackDisplayScroller extends React.Component<StackDisplayProps, any> {
     public render() {
         let displayAttributes = this.props.displayAttributes;
         let lineNumber = 1;
@@ -110,7 +114,7 @@ class StackDisplayScroller extends React.Component<IStackDisplayProps, any> {
     }
 }
 
-class StackDisplay extends React.Component<IStackDisplayProps, any> {
+class StackDisplay extends React.Component<StackDisplayProps, any> {
     public render() {
         return (
             <div className="StackDisplay">

@@ -39,15 +39,15 @@ class MultiLineEntry implements Entry {
     }
 }
 
-export class Stack {
+export class StackDisplayModel {
     readonly entries: Immutable.Stack<Entry>;
 
     constructor(entries?: Entry[] | Immutable.List<Entry> | Immutable.Stack<Entry>) {
         this.entries = Immutable.Stack(entries || []);
     }
 
-    modify(f: (prev: Immutable.Stack<Entry>) => Immutable.Stack<Entry>): Stack {
-        return new Stack(f(this.entries));
+    modify(f: (prev: Immutable.Stack<Entry>) => Immutable.Stack<Entry>): StackDisplayModel {
+        return new StackDisplayModel(f(this.entries));
     }
 }
 
