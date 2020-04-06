@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bignumber.js": "^9.0.0",
     "fp-ts": "^1.13.0",
     "immutable": "^4.0.0-rc.12",
     "react": "^16.13.1",

@@ -1,13 +1,25 @@
-import {useState} from "react";
 import * as React from "react";
+import {useState} from "react";
 import {Card} from "rebass";
+import {CalculatorEngine} from "../core/CalculatorEngine";
+import {DefaultCalculatorEngine} from "../core/DefaultCalculatorEngine";
+import {DefaultInputNormalizer} from "../core/DefaultInputNormalizer";
+import {InputNormalizer} from "../core/InputNormalizer";
+import {clearInput} from "../core/models/CommonMessages";
 import {MainInput, MainInputDisplayAttributes} from "./input/MainInput";
 import {MainInputModel} from "./input/models";
 import {DisplayModel} from "./models";
 import {createEntry, Entry, StackDisplayModel} from "./stack/models";
 import StackDisplay, {StackDisplayAttributes} from "./stack/StackDisplay";
 
+
 export function buildDisplaySandbox() {
+
+    const inputNormalizer: InputNormalizer = new DefaultInputNormalizer();
+    const calculatorEngine: CalculatorEngine = new DefaultCalculatorEngine(inputNormalizer);
+
+    calculatorEngine.runCommand(clearInput());
+
 
     const entries: Entry[] = [];
     for (let i = 0; i < 100; i++) {
