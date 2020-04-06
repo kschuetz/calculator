@@ -1,6 +1,7 @@
+import {useState} from "react";
 import * as React from "react";
 import {Card} from "rebass";
-import {MainInput, MainInputDisplayAttributes, MainInputEvents} from "./input/MainInput";
+import {MainInput, MainInputDisplayAttributes} from "./input/MainInput";
 import {MainInputModel} from "./input/models";
 import {DisplayModel} from "./models";
 import {createEntry, Entry, StackDisplayModel} from "./stack/models";
@@ -36,57 +37,44 @@ export function buildDisplaySandbox() {
         return incoming.split('').filter(isDigit).join('');
     }
 
-    const initialState = {model: new DisplayModel(initialStackDisplayModel, initialMainInputModel)};
+    let initialModel = new DisplayModel(initialStackDisplayModel, initialMainInputModel);
 
-    type State = Readonly<typeof initialState>;
+    function DisplaySandbox() {
+        const [model, setModel] = useState(initialModel);
 
-    class DisplaySandbox extends React.Component<any, State> implements MainInputEvents {
+        const eventHandlers = {
+            mainInputKeyDown(event: React.KeyboardEvent): void {
+                console.log('in Sandbox2.mainInputKeyDown');
+                console.log(event);
+            },
 
+            mainInputKeyPress(): void {
 
-        constructor(props: Readonly<any>) {
-            super(props);
-            this.state = initialState;
-        }
+            },
 
-        public render(): React.ReactNode {
-            const model = this.state.model;
-            return (
-                <Card width={300} className="DisplayRoot">
-                    <MainInput model={model.input}
-                               displayAttributes={displayAttributes}
-                               eventHandlers={this}/>
-                    <StackDisplay stack={model.stack} displayAttributes={displayAttributes}/>
-                </Card>
-            );
-        }
+            mainInputKeyUp(): void {
 
-        mainInputKeyDown(event: React.KeyboardEvent): void {
-            console.log('in mainInputKeyDown');
-            console.log(event);
-        }
+            },
 
-        mainInputKeyPress(): void {
+            mainInputChange(newValue: string): void {
+                const normalized = filterInput(newValue);
 
-        }
-
-        mainInputKeyUp(): void {
-
-        }
-
-        mainInputChange(newValue: string): void {
-            const normalized = filterInput(newValue);
-
-            const prevValue = this.state.model.input.text;
-            if(normalized !== prevValue) {
-                console.log('current state', this.state);
-                let newModel = this.state.model.modifyInput(im => im.withText(normalized));
-                const newState = {model: newModel};
-                console.log('new state', newState);
-                this.setState(newState);
+                const prevValue = model.input.text;
+                if(normalized !== prevValue) {
+                    let newModel = model.modifyInput(im => im.withText(normalized));
+                    setModel(newModel);
+                }
             }
-        }
+        };
 
-
+        return (
+            <Card width={800} className="DisplayRoot">
+                <MainInput model={model.input}
+                           displayAttributes={displayAttributes}
+                           eventHandlers={eventHandlers}/>
+                <StackDisplay stack={model.stack} displayAttributes={displayAttributes}/>
+            </Card>
+        );
     }
 
     return DisplaySandbox;
