@@ -72,7 +72,7 @@ export function buildDisplaySandbox() {
                 const normalized = filterInput(newValue);
 
                 const prevValue = model.input.text;
-                if(normalized !== prevValue) {
+                if (normalized !== prevValue) {
                     let newModel = model.modifyInput(im => im.withText(normalized));
                     setModel(newModel);
                 }
@@ -80,12 +80,14 @@ export function buildDisplaySandbox() {
         };
 
         return (
-            <Card width={800} className="DisplayRoot">
-                <MainInput model={model.input}
-                           displayAttributes={displayAttributes}
-                           eventHandlers={eventHandlers}/>
-                <StackDisplay stack={model.stack} displayAttributes={displayAttributes}/>
-            </Card>
+            <div className={"DisplayRoot"}>
+                <Card width={800} /*className="DisplayRoot"*/>
+                    <MainInput model={model.input}
+                               displayAttributes={displayAttributes}
+                               eventHandlers={eventHandlers}/>
+                    <StackDisplay stack={model.stack} displayAttributes={displayAttributes}/>
+                </Card>
+            </div>
         );
     }
 
