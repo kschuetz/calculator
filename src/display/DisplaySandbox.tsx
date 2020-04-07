@@ -6,12 +6,32 @@ import {DefaultCalculatorEngine} from "../core/DefaultCalculatorEngine";
 import {DefaultInputNormalizer} from "../core/DefaultInputNormalizer";
 import {InputNormalizer} from "../core/InputNormalizer";
 import {clearInput} from "../core/models/CommonMessages";
+import {combine, failure, failures, success, Validated} from "../core/validation/Validated";
 import {MainInput, MainInputDisplayAttributes} from "./input/MainInput";
 import {MainInputModel} from "./input/models";
 import {DisplayModel} from "./models";
 import {createEntry, Entry, StackDisplayModel} from "./stack/models";
 import StackDisplay, {StackDisplayAttributes} from "./stack/StackDisplay";
 
+function doThings() {
+    let combiner = (([a, b]: [string, string]) => a + "," + b);
+    let message1: Validated<string> = combine([
+            failure("foo"),
+            failures(["bar", "baz"]),
+            success("123"),
+            success("456")
+        ],
+        combiner);
+    console.log(message1);
+
+    let message2: Validated<string> = combine([
+            success("abc"),
+            success("def")],
+        combiner
+    );
+
+    console.log(message2);
+}
 
 export function buildDisplaySandbox() {
 
@@ -20,6 +40,7 @@ export function buildDisplaySandbox() {
 
     calculatorEngine.runCommand(clearInput());
 
+    doThings();
 
     const entries: Entry[] = [];
     for (let i = 0; i < 100; i++) {
