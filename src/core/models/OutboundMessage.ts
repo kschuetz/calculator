@@ -1,7 +1,7 @@
 import {ApplicationError} from './ApplicationError';
 import {ClearInput, SetInput} from "./CommonMessages";
 import {StackEntry} from './StackEntry';
-import {NOOP, POP, PUSH, USER_ERROR} from './tags';
+import {NOOP, POP, PROGRAM_ERROR, PUSH, USER_ERROR} from './tags';
 
 export interface Noop {
     type: typeof NOOP;
@@ -22,6 +22,11 @@ export interface UserError {
     error: ApplicationError;
 }
 
+export interface ProgramError {
+    type: typeof PROGRAM_ERROR;
+    error: Error;
+}
+
 export function push(entry: StackEntry): Push {
     return {
         type: PUSH,
@@ -36,10 +41,17 @@ export function pop(count: number): Pop {
     };
 }
 
+export function programError(error: Error): ProgramError {
+    return {
+        type: PROGRAM_ERROR,
+        error
+    };
+}
+
 export function noop(): Noop {
     return {
         type: NOOP
     };
 }
 
-export type OutboundMessage = Noop | SetInput | ClearInput | Push | Pop | UserError;
+export type OutboundMessage = Noop | SetInput | ClearInput | Push | Pop | UserError | ProgramError;

@@ -1,8 +1,10 @@
 import * as React from "react";
 import {useState} from "react";
 import {Card} from "rebass";
-import {CalculatorEngine} from "../core/CalculatorEngine";
-import {DefaultCalculatorEngine} from "../core/DefaultCalculatorEngine";
+import {CalculatorService} from "../core/CalculatorService";
+import {CalculatorSession} from "../core/CalculatorSession";
+import {DefaultCalculatorService} from "../core/DefaultCalculatorService";
+import {DefaultCalculatorSession} from "../core/DefaultCalculatorSession";
 import {DefaultInputNormalizer} from "../core/DefaultInputNormalizer";
 import {InputNormalizer} from "../core/InputNormalizer";
 import {clearInput} from "../core/models/CommonMessages";
@@ -36,9 +38,10 @@ function doThings() {
 export function buildDisplaySandbox() {
 
     const inputNormalizer: InputNormalizer = new DefaultInputNormalizer();
-    const calculatorEngine: CalculatorEngine = new DefaultCalculatorEngine(inputNormalizer);
+    const calculatorService: CalculatorService = new DefaultCalculatorService(inputNormalizer);
+    const calculatorSession: CalculatorSession = new DefaultCalculatorSession(calculatorService);
 
-    calculatorEngine.runCommand(clearInput());
+    calculatorSession.runCommand(clearInput());
 
     doThings();
 

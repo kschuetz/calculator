@@ -5,3 +5,4 @@ export const PUSH = 'PUSH';
 export const POP = 'POP';
 export const USER_ERROR = 'USER_ERROR';
 export const SUBMIT_INPUT = 'SUBMIT_INPUT';
+export const PROGRAM_ERROR = 'PROGRAM_ERROR';
