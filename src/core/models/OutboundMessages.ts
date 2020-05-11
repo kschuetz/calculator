@@ -1,4 +1,5 @@
 import {NonEmptyArray} from "fp-ts/lib/NonEmptyArray";
+import {fold as foldOption, Option} from "fp-ts/lib/Option";
 import * as Immutable from "immutable";
 import {OutboundMessage} from "./OutboundMessage";
 
@@ -29,8 +30,16 @@ export class OutboundMessages {
         return this.items.get(index);
     }
 
+    add(message: OutboundMessage): OutboundMessages {
+        return new OutboundMessages(this.items.push(message))
+    }
+
     concat(other: OutboundMessages): OutboundMessages {
         return new OutboundMessages(this.items.concat(other.items));
+    }
+
+    maybeAdd(message: Option<OutboundMessage>): OutboundMessages {
+        return foldOption(() => this, (m: OutboundMessage) => this.add(m))(message);
     }
 
     static singleton(message: OutboundMessage): OutboundMessages {

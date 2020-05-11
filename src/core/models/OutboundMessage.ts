@@ -1,7 +1,8 @@
-import {ApplicationError} from './ApplicationError';
+import {NonEmptyArray} from "fp-ts/lib/NonEmptyArray";
 import {ClearInput, SetInput} from "./CommonMessages";
+import {ApplicationError, ApplicationWarning} from './Errors';
 import {StackEntry} from './StackEntry';
-import {NOOP, POP, PROGRAM_ERROR, PUSH, USER_ERROR} from './tags';
+import {NOOP, POP, PROGRAM_ERROR, PUSH, USER_ERROR, USER_WARNING} from './tags';
 
 export interface Noop {
     type: typeof NOOP;
@@ -19,13 +20,19 @@ export interface Pop {
 
 export interface UserError {
     type: typeof USER_ERROR;
-    error: ApplicationError;
+    errors: NonEmptyArray<ApplicationError>;
 }
 
 export interface ProgramError {
     type: typeof PROGRAM_ERROR;
     error: Error;
 }
+
+export interface UserWarning {
+    type: typeof USER_WARNING;
+    warnings: NonEmptyArray<ApplicationWarning>;
+}
+
 
 export function push(entry: StackEntry): Push {
     return {
@@ -54,4 +61,12 @@ export function noop(): Noop {
     };
 }
 
-export type OutboundMessage = Noop | SetInput | ClearInput | Push | Pop | UserError | ProgramError;
+export function userWarning(warnings: NonEmptyArray<ApplicationWarning>): UserWarning {
+    return {
+        type: USER_WARNING,
+        warnings
+    };
+}
+
+export type OutboundMessage = Noop | SetInput | ClearInput | Push | Pop | UserError | ProgramError |
+    UserWarning;
