@@ -2,7 +2,6 @@ import {Either, fold, left, right} from "fp-ts/lib/Either";
 import {NonEmptyArray} from "fp-ts/lib/NonEmptyArray";
 import {ErrorList} from "./ErrorList";
 
-
 export function combine<A, B>(vs: NonEmptyArray<Validated<A>>,
                               f: (items: NonEmptyArray<A>) => B): Validated<B> {
     let errorList: ErrorList | undefined = undefined;

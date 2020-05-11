@@ -1,6 +1,6 @@
 import {InputNormalizer} from "./InputNormalizer";
 import {InputEnvironment} from "./models/InputEnvironment";
-import {success, Validated} from "./validation/Validated";
+import {normalizedInput, NormalizedInput} from "./validation/NormalizedInput";
 
 function isDigit(c: string): boolean {
     let cc = c.charCodeAt(0);
@@ -12,7 +12,7 @@ function filterDigits(incoming: string): string {
 }
 
 export class DefaultInputNormalizer implements InputNormalizer {
-    normalizeInput(environment: InputEnvironment, text: string): Validated<string> {
-        return success(filterDigits(text));
+    normalizeInput(environment: InputEnvironment, text: string): NormalizedInput {
+        return normalizedInput(filterDigits(text));
     }
 }

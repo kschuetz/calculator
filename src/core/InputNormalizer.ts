@@ -1,6 +1,6 @@
 import {InputEnvironment} from "./models/InputEnvironment";
-import {Validated} from "./validation/Validated";
+import {NormalizedInput} from "./validation/NormalizedInput";
 
 export interface InputNormalizer {
-    normalizeInput(environment: InputEnvironment, text: string): Validated<string>;
+    normalizeInput(environment: InputEnvironment, text: string): NormalizedInput;
 }
