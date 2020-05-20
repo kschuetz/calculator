@@ -1,4 +1,3 @@
-import {NonEmptyArray} from "fp-ts/lib/NonEmptyArray";
 import {fold as foldOption, Option} from "fp-ts/lib/Option";
 import * as Immutable from "immutable";
 import {OutboundMessage} from "./OutboundMessage";
@@ -6,20 +5,16 @@ import {OutboundMessage} from "./OutboundMessage";
 export class OutboundMessages {
     readonly items: Immutable.List<OutboundMessage>;
 
-    constructor(items: NonEmptyArray<OutboundMessage> | Immutable.List<OutboundMessage>) {
-        let list = Immutable.List(items);
-        if (list.isEmpty()) {
-            throw new Error("non-empty list required");
-        }
-        this.items = list;
+    constructor(items: OutboundMessage[] | Immutable.List<OutboundMessage>) {
+        this.items = Immutable.List(items);
     }
 
     size() {
         return this.items.size;
     }
 
-    head(): OutboundMessage {
-        return <OutboundMessage>this.items.get(0);
+    head(): OutboundMessage | null {
+        return <OutboundMessage>this.items.get(0, null);
     }
 
     tail(): Immutable.List<OutboundMessage> {
@@ -45,4 +40,10 @@ export class OutboundMessages {
     static singleton(message: OutboundMessage): OutboundMessages {
         return new OutboundMessages(Immutable.List.of(message));
     }
+
+    static empty(): OutboundMessages {
+        return EMPTY;
+    }
 }
+
+const EMPTY = new OutboundMessages([]);
