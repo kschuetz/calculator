@@ -6,8 +6,10 @@ import {CalculatorSession} from "../core/CalculatorSession";
 import {DefaultCalculatorService} from "../core/DefaultCalculatorService";
 import {DefaultCalculatorSession} from "../core/DefaultCalculatorSession";
 import {DefaultInputNormalizer} from "../core/DefaultInputNormalizer";
+import {DefaultInputValidator} from "../core/DefaultInputValidator";
 import {InputNormalizer} from "../core/InputNormalizer";
-import {clearInput} from "../core/models/CommonMessages";
+import {InputValidator} from "../core/InputValidator";
+import {CommonMessages} from "../core/models/CommonMessages";
 import {combine, failure, failures, success, Validated} from "../core/validation/Validated";
 import {MainInput, MainInputDisplayAttributes} from "./input/MainInput";
 import {MainInputModel} from "./input/models";
@@ -38,10 +40,11 @@ function doThings() {
 export function buildDisplaySandbox() {
 
     const inputNormalizer: InputNormalizer = new DefaultInputNormalizer();
-    const calculatorService: CalculatorService = new DefaultCalculatorService(inputNormalizer);
+    const inputValidator: InputValidator = new DefaultInputValidator(inputNormalizer);
+    const calculatorService: CalculatorService = new DefaultCalculatorService(inputNormalizer, inputValidator);
     const calculatorSession: CalculatorSession = new DefaultCalculatorSession(calculatorService);
 
-    calculatorSession.runCommand(clearInput());
+    calculatorSession.runCommand(CommonMessages.clearInput());
 
     doThings();
 

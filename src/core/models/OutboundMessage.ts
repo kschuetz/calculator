@@ -1,6 +1,6 @@
 import {NonEmptyArray} from "fp-ts/lib/NonEmptyArray";
 import {ClearInput, SetInput} from "./CommonMessages";
-import {ApplicationError, ApplicationWarning} from './Errors';
+import {ApplicationError, ApplicationWarning, INPUT_WARNING, InputWarning} from './Errors';
 import {StackEntry} from './StackEntry';
 import {NOOP, POP, PROGRAM_ERROR, PUSH, USER_ERROR, USER_WARNING} from './tags';
 
@@ -33,40 +33,48 @@ export interface UserWarning {
     warnings: NonEmptyArray<ApplicationWarning>;
 }
 
-
-export function push(entry: StackEntry): Push {
-    return {
-        type: PUSH,
-        entry
-    };
-}
-
-export function pop(count: number): Pop {
-    return {
-        type: POP,
-        count
-    };
-}
-
-export function programError(error: Error): ProgramError {
-    return {
-        type: PROGRAM_ERROR,
-        error
-    };
-}
-
-export function noop(): Noop {
-    return {
-        type: NOOP
-    };
-}
-
-export function userWarning(warnings: NonEmptyArray<ApplicationWarning>): UserWarning {
-    return {
-        type: USER_WARNING,
-        warnings
-    };
-}
-
 export type OutboundMessage = Noop | SetInput | ClearInput | Push | Pop | UserError | ProgramError |
     UserWarning;
+
+export class OutboundMessages {
+    static push(entry: StackEntry): Push {
+        return {
+            type: PUSH,
+            entry
+        };
+    }
+
+    static pop(count: number): Pop {
+        return {
+            type: POP,
+            count
+        };
+    }
+
+    static programError(error: Error): ProgramError {
+        return {
+            type: PROGRAM_ERROR,
+            error
+        };
+    }
+
+    static noop(): Noop {
+        return {
+            type: NOOP
+        };
+    }
+
+    static userWarning(warnings: NonEmptyArray<ApplicationWarning>): UserWarning {
+        return {
+            type: USER_WARNING,
+            warnings
+        };
+    }
+
+    static inputWarning(message: string): InputWarning {
+        return {
+            type: INPUT_WARNING,
+            message
+        }
+    }
+}

@@ -3,8 +3,8 @@ import {CalculatorSession} from "./CalculatorSession";
 import {Action} from "./models/Action";
 import {CalculatorState} from "./models/CalculatorState";
 import {InboundMessage} from "./models/InboundMessage";
-import {programError} from "./models/OutboundMessage";
-import {OutboundMessages} from "./models/OutboundMessages";
+import {OutboundMessages} from "./models/OutboundMessage";
+import {OutboundMessageList} from "./models/OutboundMessageList";
 
 // import {SET_INPUT} from "./models/tags";
 
@@ -19,7 +19,7 @@ export class DefaultCalculatorSession implements CalculatorSession {
         this.calculatorService = calculatorService;
     }
 
-    runCommand(command: InboundMessage): Promise<OutboundMessages> {
+    runCommand(command: InboundMessage): Promise<OutboundMessageList> {
         let messageType = command.type;
         switch (command.type) {
             case "SET_INPUT":
@@ -29,11 +29,11 @@ export class DefaultCalculatorSession implements CalculatorSession {
             case "SUBMIT_INPUT":
                 return this.runAction(this.calculatorService.submitInput());
             default:
-                return Promise.resolve(OutboundMessages.singleton(programError(new Error("unrecognized message type: " + messageType))));
+                return Promise.resolve(OutboundMessageList.singleton(OutboundMessages.programError(new Error("unrecognized message type: " + messageType))));
         }
     }
 
-    private runAction(action: Action<CalculatorState>): Promise<OutboundMessages> {
+    private runAction(action: Action<CalculatorState>): Promise<OutboundMessageList> {
         const self = this;
         return action.run(this.state)
             .then(([result, newState]) => {

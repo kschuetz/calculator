@@ -2,7 +2,7 @@ import {fold as foldOption, Option} from "fp-ts/lib/Option";
 import * as Immutable from "immutable";
 import {OutboundMessage} from "./OutboundMessage";
 
-export class OutboundMessages {
+export class OutboundMessageList {
     readonly items: Immutable.List<OutboundMessage>;
 
     constructor(items: OutboundMessage[] | Immutable.List<OutboundMessage>) {
@@ -25,25 +25,25 @@ export class OutboundMessages {
         return this.items.get(index);
     }
 
-    add(message: OutboundMessage): OutboundMessages {
-        return new OutboundMessages(this.items.push(message))
+    add(message: OutboundMessage): OutboundMessageList {
+        return new OutboundMessageList(this.items.push(message))
     }
 
-    concat(other: OutboundMessages): OutboundMessages {
-        return new OutboundMessages(this.items.concat(other.items));
+    concat(other: OutboundMessageList): OutboundMessageList {
+        return new OutboundMessageList(this.items.concat(other.items));
     }
 
-    maybeAdd(message: Option<OutboundMessage>): OutboundMessages {
+    maybeAdd(message: Option<OutboundMessage>): OutboundMessageList {
         return foldOption(() => this, (m: OutboundMessage) => this.add(m))(message);
     }
 
-    static singleton(message: OutboundMessage): OutboundMessages {
-        return new OutboundMessages(Immutable.List.of(message));
+    static singleton(message: OutboundMessage): OutboundMessageList {
+        return new OutboundMessageList(Immutable.List.of(message));
     }
 
-    static empty(): OutboundMessages {
+    static empty(): OutboundMessageList {
         return EMPTY;
     }
 }
 
-const EMPTY = new OutboundMessages([]);
+const EMPTY = new OutboundMessageList([]);

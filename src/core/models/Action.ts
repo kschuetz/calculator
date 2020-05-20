@@ -1,15 +1,15 @@
 import {fold as foldOption, Option} from "fp-ts/lib/Option";
 import {OutboundMessage} from "./OutboundMessage";
-import {OutboundMessages} from "./OutboundMessages";
+import {OutboundMessageList} from "./OutboundMessageList";
 
 export class Action<S> {
-    private readonly runFn: (incoming: S) => Promise<[OutboundMessages, S]>;
+    private readonly runFn: (incoming: S) => Promise<[OutboundMessageList, S]>;
 
-    constructor(runFn: (incoming: S) => Promise<[OutboundMessages, S]>) {
+    constructor(runFn: (incoming: S) => Promise<[OutboundMessageList, S]>) {
         this.runFn = runFn;
     }
 
-    run(incoming: S): Promise<[OutboundMessages, S]> {
+    run(incoming: S): Promise<[OutboundMessageList, S]> {
         return this.runFn(incoming);
     }
 
@@ -21,7 +21,7 @@ export class Action<S> {
             first(state0)
                 .then(([outbound0, state1]) =>
                     second(state1)
-                        .then(([outbound1, state2]: [OutboundMessages, S]) =>
+                        .then(([outbound1, state2]: [OutboundMessageList, S]) =>
                             [outbound0.concat(outbound1), state2])));
     }
 
@@ -37,7 +37,7 @@ export class Action<S> {
             return first(state0)
                 .then(([outbound0, state1]) =>
                     second(state1)
-                        .then(([outbound1, state2]: [OutboundMessages, S]) =>
+                        .then(([outbound1, state2]: [OutboundMessageList, S]) =>
                             [outbound0.concat(outbound1), state2]));
         });
     }
@@ -48,36 +48,36 @@ export class Action<S> {
         });
     }
 
-    static messagesFromState<S>(f: (incoming: S) => OutboundMessages): Action<S> {
+    static messagesFromState<S>(f: (incoming: S) => OutboundMessageList): Action<S> {
         return new Action(incoming => Promise.resolve([f(incoming), incoming]));
     }
 
     static messageFromState<S>(f: (incoming: S) => OutboundMessage): Action<S> {
-        return new Action(incoming => Promise.resolve([OutboundMessages.singleton(f(incoming)), incoming]));
+        return new Action(incoming => Promise.resolve([OutboundMessageList.singleton(f(incoming)), incoming]));
     }
 
     static modifyState<S>(f: (incoming: S) => S): Action<S> {
-        return new Action(incoming => Promise.resolve([OutboundMessages.empty(), f(incoming)]));
+        return new Action(incoming => Promise.resolve([OutboundMessageList.empty(), f(incoming)]));
     }
 
-    static sendMessages<S>(messages: OutboundMessages): Action<S> {
+    static sendMessages<S>(messages: OutboundMessageList): Action<S> {
         return new Action(incoming => Promise.resolve([messages, incoming]));
     }
 
     static sendMessage<S>(message: OutboundMessage): Action<S> {
-        return new Action(incoming => Promise.resolve([OutboundMessages.singleton(message), incoming]));
+        return new Action(incoming => Promise.resolve([OutboundMessageList.singleton(message), incoming]));
     }
 
-    static asyncMessagesFromState<S>(f: (incoming: S) => Promise<OutboundMessages>): Action<S> {
+    static asyncMessagesFromState<S>(f: (incoming: S) => Promise<OutboundMessageList>): Action<S> {
         return new Action(incoming => f(incoming).then(messages => [messages, incoming]));
     }
 
     static asyncMessageFromState<S>(f: (incoming: S) => Promise<OutboundMessage>): Action<S> {
-        return new Action(incoming => f(incoming).then(message => [OutboundMessages.singleton(message), incoming]));
+        return new Action(incoming => f(incoming).then(message => [OutboundMessageList.singleton(message), incoming]));
     }
 
     static asyncModifyState<S>(f: (incoming: S) => Promise<S>): Action<S> {
-        return new Action(incoming => f(incoming).then(newState => [OutboundMessages.empty(), newState]));
+        return new Action(incoming => f(incoming).then(newState => [OutboundMessageList.empty(), newState]));
     }
 
     static noop<S>(): Action<S> {
@@ -86,4 +86,4 @@ export class Action<S> {
 
 }
 
-const NOOP = new Action<any>(incoming => Promise.resolve([OutboundMessages.empty(), incoming]));
+const NOOP = new Action<any>(incoming => Promise.resolve([OutboundMessageList.empty(), incoming]));

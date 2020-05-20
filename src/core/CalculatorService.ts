@@ -1,11 +1,10 @@
-import {Action} from "./models/Action";
-import {CalculatorState} from "./models/CalculatorState";
+import {CalculatorAction} from "./models/CalculatorActions";
 
 
 export interface CalculatorService {
-    setInput(data: string): Action<CalculatorState>;
+    setInput(data: string): CalculatorAction;
 
-    submitInput(): Action<CalculatorState>;
+    submitInput(): CalculatorAction;
 
-    clearInput(): Action<CalculatorState>;
+    clearInput(): CalculatorAction;
 }

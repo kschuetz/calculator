@@ -9,15 +9,17 @@ export interface ClearInput {
     type: typeof CLEAR_INPUT;
 }
 
-export function setInput(data: string): SetInput {
-    return {
-        type: SET_INPUT,
-        data
-    };
-}
+export class CommonMessages {
+    static setInput(data: string): SetInput {
+        return {
+            type: SET_INPUT,
+            data
+        };
+    }
 
-export function clearInput(): ClearInput {
-    return {
-        type: CLEAR_INPUT
-    };
+    static clearInput(): ClearInput {
+        return {
+            type: CLEAR_INPUT
+        };
+    }
 }

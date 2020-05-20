@@ -13,11 +13,4 @@ export interface InputWarning {
     message: string;
 }
 
-export function inputWarning(message: string): InputWarning {
-    return {
-        type: INPUT_WARNING,
-        message
-    }
-}
-
 export type ApplicationWarning = InputWarning;

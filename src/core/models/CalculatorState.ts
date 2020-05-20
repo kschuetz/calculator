@@ -4,7 +4,6 @@ import {Mode} from "./Mode";
 import {StackState} from "./StackState";
 
 export class CalculatorState {
-
     readonly input: InputState;
     readonly mode: Mode;
     readonly stack: StackState;
