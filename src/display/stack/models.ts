@@ -49,6 +49,10 @@ export class StackDisplayModel {
     modify(f: (prev: Immutable.Stack<Entry>) => Immutable.Stack<Entry>): StackDisplayModel {
         return new StackDisplayModel(f(this.entries));
     }
+
+    push(entry: Entry): StackDisplayModel {
+        return this.modify(entries => entries.push(entry));
+    }
 }
 
 export function createEntry(lines?: string | string[] | Immutable.List<string>): Entry {

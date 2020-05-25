@@ -44,7 +44,11 @@ export class CalculatorService {
 
     submitInput(): CalculatorAction {
         return compound(state => {
-            let validated: Either<ErrorList, StackEntry> = this.inputValidator.validateInput(state, state.input.data);
+            let inputState = state.input;
+            if (inputState.isEmpty()) {
+                return noop();
+            }
+            let validated: Either<ErrorList, StackEntry> = this.inputValidator.validateInput(state, inputState.data);
             return foldEither((errors: ErrorList) => CalculatorService.sendInputErrors(errors),
                 (stackEntry: StackEntry) =>
                     pushToStack(stackEntry)
