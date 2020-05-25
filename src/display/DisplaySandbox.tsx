@@ -3,8 +3,6 @@ import {useState} from "react";
 import {Card} from "rebass";
 import {CalculatorService} from "../core/CalculatorService";
 import {CalculatorSession} from "../core/CalculatorSession";
-import {DefaultCalculatorService} from "../core/DefaultCalculatorService";
-import {DefaultCalculatorSession} from "../core/DefaultCalculatorSession";
 import {DefaultInputNormalizer} from "../core/DefaultInputNormalizer";
 import {DefaultInputValidator} from "../core/DefaultInputValidator";
 import {InputNormalizer} from "../core/InputNormalizer";
@@ -41,8 +39,8 @@ export function buildDisplaySandbox() {
 
     const inputNormalizer: InputNormalizer = new DefaultInputNormalizer();
     const inputValidator: InputValidator = new DefaultInputValidator(inputNormalizer);
-    const calculatorService: CalculatorService = new DefaultCalculatorService(inputNormalizer, inputValidator);
-    const calculatorSession: CalculatorSession = new DefaultCalculatorSession(calculatorService);
+    const calculatorService: CalculatorService = new CalculatorService(inputNormalizer, inputValidator);
+    const calculatorSession: CalculatorSession = new CalculatorSession(calculatorService);
 
     calculatorSession.runCommand(CommonMessages.clearInput());
 
