@@ -9,7 +9,7 @@
     "lodash": "^4.17.15",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts-ts": "3.1.0",
+    "react-scripts-ts": "4.0.8",
     "rebass": "^4.0.7",
     "styled-components": "^5.0.1",
     "tslib": "^1.11.1"
